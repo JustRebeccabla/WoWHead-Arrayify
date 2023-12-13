@@ -19,7 +19,7 @@ customtkinter.set_default_color_theme("blue")
 
 app = customtkinter.CTk()
 app.geometry("800x500")
-app.title("WoWHead Arrayify")
+app.title("WoWHead Lua Arrayify")
 app.resizable(False, False)
 
 # Create labels, input field, and output box
@@ -37,18 +37,18 @@ progress = ttk.Progressbar(app, length=100, mode='determinate')
 progress.grid(row=3, column=0, columnspan=2, sticky='ew')
 
 
+
 # Create switch button
 game_mode = customtkinter.StringVar(value="retail")
 switch_button = customtkinter.CTkSwitch(app, text="Retail/Classic", variable=game_mode, onvalue="classic", offvalue="retail")
-switch_button.grid(row=4, column=0, columnspan=2)
-
+switch_button.grid(row=5, column=0)
 
 # Create dropdown menu
 dropdown_options = ["Npcs", "Spells", "Objects"]
-dropdown_var = tkinter.StringVar()
+dropdown_var = customtkinter.StringVar()
 dropdown_var.set(dropdown_options[0])  # set default value to the first option
-dropdown = tkinter.OptionMenu(app, dropdown_var, *dropdown_options)
-dropdown.grid(row=5, column=0, columnspan=2)
+dropdown = customtkinter.CTkOptionMenu(app, values=dropdown_options, variable=dropdown_var)
+dropdown.grid(row=5, column=1)
 
 def callback(*args):
     print("game_mode is now", game_mode.get())
@@ -134,9 +134,16 @@ def lookup_spells():
     time.sleep(1)  # wait for progress bar update thread to finish
 # Create button to trigger spell lookup
 lookup_button = customtkinter.CTkButton(app, text="Lookup", command=lambda: threading.Thread(target=lookup_spells).start())
-lookup_button.grid(row=2, column=0, columnspan=2)
+lookup_button.grid(row=4, column=0, columnspan=2)
+
+def on_closing():
+    # Stop all running threads here
+    app.quit()  # stops mainloop
+    app.destroy()  # this is necessary on Windows to prevent Fatal Python Error: PyEval_RestoreThread: NULL tstate
+
 
 def main():
+    app.protocol("WM_DELETE_WINDOW", on_closing)
     app.mainloop()
 
 if __name__ == "__main__":
