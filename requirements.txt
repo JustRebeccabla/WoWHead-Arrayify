@@ -1,4 +1,6 @@
-beautifulsoup4==4.12.2
-pyfiglet==1.0.2
-Requests==2.31.0
-tqdm==4.66.1
+requests==2.26.0
+beautifulsoup4==4.10.0
+tkinter==0.0.0
+customtkinter==0.0.1
+tqdm==4.62.3
+pyfiglet==0.8.post1
